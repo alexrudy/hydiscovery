@@ -308,7 +308,7 @@ dependencies = [
 
 [[package]]
 name = "hydiscovery"
-version = "0.1.0"
+version = "0.7.0"
 dependencies = [
  "camino",
  "dashmap",
@@ -318,6 +318,7 @@ dependencies = [
  "humantime-serde",
  "hyper",
  "hyperdriver",
+ "pidfile2",
  "serde",
  "static_assertions",
  "tempfile",
@@ -351,20 +352,18 @@ dependencies = [
 
 [[package]]
 name = "hyperdriver"
-version = "0.6.0"
+version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e49e3b14f4be2c8e992e5065a28615de86957f72589cb7ca3cd2d23c853afc58"
+checksum = "782dda5d41dbc237c66e1d7ce794e549f283124e83c5a0d791f68b78627b5d8a"
 dependencies = [
  "bytes",
  "camino",
- "dashmap",
  "futures-core",
  "futures-util",
  "http",
  "http-body",
  "http-body-util",
  "hyper",
- "libc",
  "ouroboros",
  "parking_lot",
  "pin-project",
@@ -558,6 +557,16 @@ dependencies = [
  "redox_syscall",
  "smallvec",
  "windows-targets",
+]
+
+[[package]]
+name = "pidfile2"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a027d2dacf89e94db02cb83491740e5c458bce7ae019d92fa5873215055f7088"
+dependencies = [
+ "libc",
+ "tracing",
 ]
 
 [[package]]

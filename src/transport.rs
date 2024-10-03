@@ -11,7 +11,6 @@ use hyper::Uri;
 use super::ConnectionError;
 use super::ServiceRegistry;
 use hyperdriver::client::conn::Stream as ClientStream;
-use hyperdriver::client::conn::TransportStream;
 
 pub use builder::TransportBuilder;
 
@@ -79,7 +78,7 @@ impl RegistryTransport {
 }
 
 impl tower::Service<Uri> for RegistryTransport {
-    type Response = TransportStream<ClientStream>;
+    type Response = ClientStream;
 
     type Error = ConnectionError;
 
@@ -98,16 +97,7 @@ impl tower::Service<Uri> for RegistryTransport {
                 let registry = self.registry.clone();
                 let service = scheme.service(&req).map(|s| s.to_owned());
                 if let Some(service) = service {
-                    (async move {
-                        let stream = registry.connect(&service).await?;
-                        TransportStream::new_stream(stream).await.map_err(|error| {
-                            ConnectionError::Handshake {
-                                error,
-                                name: service,
-                            }
-                        })
-                    })
-                    .boxed()
+                    (async move { registry.connect(&service).await }).boxed()
                 } else {
                     futures_util::future::ready(Err(ConnectionError::InvalidUri(req))).boxed()
                 }
