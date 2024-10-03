@@ -16,9 +16,9 @@ use hyperdriver::client::conn::protocol::auto;
 
 use hyperdriver::client::conn::Stream as ClientStream;
 use hyperdriver::info::UnixAddr;
-use hyperdriver::pidfile::PidFile;
 use hyperdriver::server::AutoBuilder;
 use hyperdriver::stream::UnixStream;
+use pidfile::PidFile;
 
 use camino::{Utf8Path, Utf8PathBuf};
 use dashmap::mapref::one::{Ref, RefMut};
@@ -430,7 +430,7 @@ impl PidLock {
     fn is_available(&self) -> bool {
         tracing::trace!("Checking PID file {self:?}");
         match self {
-            PidLock::Path(path) => PidFile::is_locked(path)
+            PidLock::Path(path) => PidFile::is_locked(path.as_std_path())
                 .map_err(|error| tracing::warn!("Unable to inspect PID file: {error:?}"))
                 .unwrap_or(false),
             PidLock::Lock(_) => true,
