@@ -7,7 +7,7 @@
 
 This crate provides for internal service routing in services with many components. It is built on `hyperdriver` and `hyper`.
 
-[crate-image]: https://buildstats.info/crate/hydiscovery
+[crate-image]: https://img.shields.io/crates/v/hydiscovery
 [crate-link]: https://crates.io/crates/hydiscovery
 [docs-image]: https://docs.rs/hydiscovery/badge.svg
 [docs-link]: https://docs.rs/hydiscovery/
