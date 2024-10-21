@@ -278,7 +278,14 @@ mod tests {
         let registry = ServiceRegistry::new();
         let svc = Svc;
 
-        let server = registry.server(Shared::new(svc), "service").await.unwrap();
+        let server = registry
+            .server(
+                Shared::new(svc),
+                "service",
+                hyperdriver::bridge::rt::TokioExecutor::new(),
+            )
+            .await
+            .unwrap();
 
         let (tx, rx) = tokio::sync::oneshot::channel();
 

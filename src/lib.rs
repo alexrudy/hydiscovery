@@ -277,16 +277,18 @@ impl ServiceRegistry {
     }
 
     /// Create a server which will bind to a service by name.
-    pub async fn server<'a, S, M, B>(
+    pub async fn server<'a, S, M, B, E>(
         &'a self,
         make_service: M,
         name: S,
+        executor: E,
     ) -> Result<
         hyperdriver::server::Server<
             hyperdriver::server::conn::Acceptor,
             AutoBuilder<TokioExecutor>,
             M,
             B,
+            E,
         >,
         BindError,
     >
@@ -297,14 +299,16 @@ impl ServiceRegistry {
         Ok(hyperdriver::server::Server::builder()
             .with_acceptor(acceptor)
             .with_auto_http()
-            .with_make_service(make_service))
+            .with_make_service(make_service)
+            .with_executor(executor))
     }
 
     /// Create a server which will use a registry transport to proxy requests to services.
-    pub fn router<A, B>(
+    pub fn router<A, B, E>(
         &self,
         acceptor: A,
-    ) -> hyperdriver::server::Server<A, AutoBuilder<TokioExecutor>, Shared<Client>, B>
+        executor: E,
+    ) -> hyperdriver::server::Server<A, AutoBuilder<TokioExecutor>, Shared<Client>, B, E>
     where
         A: hyperdriver::server::conn::Accept,
         B: http_body::Body,
@@ -313,6 +317,7 @@ impl ServiceRegistry {
             .with_acceptor(acceptor)
             .with_auto_http()
             .with_shared_service(self.client())
+            .with_executor(executor)
     }
 
     /// Connect to a service by name.
