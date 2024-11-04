@@ -352,9 +352,9 @@ dependencies = [
 
 [[package]]
 name = "hyperdriver"
-version = "0.8.0"
+version = "0.8.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a12efdb77cd831722e053e7e9355cf1ec2a36f626b3bf3d1374da4137f5825d5"
+checksum = "c801498739013fb7d4fa740248fde78abca2fa2647042d71b14840403314ded0"
 dependencies = [
  "bytes",
  "camino",
