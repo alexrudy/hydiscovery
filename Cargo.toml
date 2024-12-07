@@ -12,6 +12,8 @@ authors = ["Alex Rudy <opensource@alexrudy.net>"]
 categories = ["network-programming", "web-programming::http-server"]
 keywords = ["hyper", "http", "server", "async"]
 
+[lints.clippy]
+needless_lifetimes = "allow"
 
 [dependencies]
 camino = { version = "1", default-features = false }
@@ -22,18 +24,18 @@ http-body = { version = "1" }
 humantime-serde = { version = "1.1.1", optional = true }
 hyper = { version = "1", features = ["full"] }
 serde = { version = "1", optional = true, features = ["derive"] }
-thiserror = { version = "1" }
+thiserror = { version = "2" }
 tokio = { version = "1", features = ["full"] }
 tracing = { version = "^0.1" }
 pidfile = { version = "0.1", package = "pidfile2" }
 
 [dependencies.tower]
-version = "0.4"
+version = "0.5"
 features = ["make", "util"]
 default-features = false
 
 [dependencies.hyperdriver]
-version = "0.8"
+version = "0.8.3"
 features = ["client", "server"]
 
 [features]
