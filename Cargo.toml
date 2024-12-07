@@ -28,7 +28,7 @@ tracing = { version = "^0.1" }
 pidfile = { version = "0.1", package = "pidfile2" }
 
 [dependencies.tower]
-version = "0.4"
+version = "0.5"
 features = ["make", "util"]
 default-features = false
 
