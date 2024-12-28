@@ -77,7 +77,7 @@ impl RegistryTransport {
     }
 }
 
-impl tower::Service<Uri> for RegistryTransport {
+impl tower::Service<http::request::Parts> for RegistryTransport {
     type Response = ClientStream;
 
     type Error = ConnectionError;
@@ -91,18 +91,22 @@ impl tower::Service<Uri> for RegistryTransport {
         std::task::Poll::Ready(Ok(()))
     }
 
-    fn call(&mut self, req: Uri) -> Self::Future {
-        match req.scheme_str().and_then(|scheme| self.schemes.get(scheme)) {
+    fn call(&mut self, req: http::request::Parts) -> Self::Future {
+        match req
+            .uri
+            .scheme_str()
+            .and_then(|scheme| self.schemes.get(scheme))
+        {
             Some(scheme) => {
                 let registry = self.registry.clone();
-                let service = scheme.service(&req).map(|s| s.to_owned());
+                let service = scheme.service(&req.uri).map(|s| s.to_owned());
                 if let Some(service) = service {
                     (async move { registry.connect(&service).await }).boxed()
                 } else {
-                    futures_util::future::ready(Err(ConnectionError::InvalidUri(req))).boxed()
+                    futures_util::future::ready(Err(ConnectionError::InvalidUri(req.uri))).boxed()
                 }
             }
-            None => futures_util::future::ready(Err(ConnectionError::InvalidUri(req))).boxed(),
+            None => futures_util::future::ready(Err(ConnectionError::InvalidUri(req.uri))).boxed(),
         }
     }
 }
@@ -232,11 +236,15 @@ mod tests {
 
     use crate::{ConnectionError, ServiceDiscovery};
     use hyperdriver::info::HasConnectionInfo;
+    use hyperdriver::IntoRequestParts as _;
     use hyperdriver::{body::Body, info::BraidAddr};
+    use static_assertions::assert_impl_one;
 
     use super::*;
 
     type BoxError = Box<dyn std::error::Error + Sync + std::marker::Send + 'static>;
+
+    assert_impl_one!(RegistryTransport: hyperdriver::client::conn::Transport);
 
     #[test]
     fn test_svc_scheme() {
@@ -298,7 +306,7 @@ mod tests {
 
         let transport = RegistryTransport::with_default_schemes(registry);
 
-        let uri = "svc://service".parse().unwrap();
+        let uri = "svc://service".into_request_parts();
         let stream = transport.oneshot(uri).await.unwrap();
 
         let info = stream.info();
@@ -313,7 +321,7 @@ mod tests {
         registry.config_mut().connect_timeout = Some(Duration::ZERO);
         let transport = RegistryTransport::with_default_schemes(registry);
 
-        let uri = "svc://service".parse().unwrap();
+        let uri = "svc://service".into_request_parts();
         let err = transport.oneshot(uri).await.unwrap_err();
 
         assert!(matches!(err, ConnectionError::ConnectionTimeout(_, _)));
@@ -331,7 +339,7 @@ mod tests {
 
         let transport = RegistryTransport::with_default_schemes(registry);
 
-        let uri = "svc://service".parse().unwrap();
+        let uri = "svc://service".into_request_parts();
         let err = transport.oneshot(uri).await.unwrap_err();
 
         match err {
