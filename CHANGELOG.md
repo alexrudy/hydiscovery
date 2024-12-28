@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.2](https://github.com/alexrudy/hydiscovery/compare/v0.8.1...v0.8.2) - 2024-12-28
+
+### Other
+
+- Update hyperdriver, and alter protocol to accept request parts
+
 ## [0.8.1](https://github.com/alexrudy/hydiscovery/compare/v0.8.0...v0.8.1) - 2024-12-07
 
 ### Other
