@@ -35,7 +35,7 @@ features = ["make", "util"]
 default-features = false
 
 [dependencies.hyperdriver]
-version = "0.8.3"
+version = "0.8.5"
 features = ["client", "server"]
 
 [features]

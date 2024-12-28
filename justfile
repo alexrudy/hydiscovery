@@ -9,6 +9,8 @@ rust := env("RUSTUP_TOOLCHAIN", "stable")
 all: fmt check-all deny clippy examples docs test machete udeps msrv
     @echo "All checks passed 🍻"
 
+airplane-mode: fmt check-all clippy examples docs test machete udeps msrv
+
 # Check for unused dependencies
 udeps:
     #!/usr/bin/env sh
