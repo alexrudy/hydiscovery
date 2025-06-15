@@ -6,7 +6,7 @@ description = "Discovery for hyper services"
 license = "MIT"
 repository = "https://github.com/alexrudy/hydiscovery"
 documentation = "https://docs.rs/hydiscovery"
-rust-version = "1.74"
+rust-version = "1.75"
 readme = "README.md"
 authors = ["Alex Rudy <opensource@alexrudy.net>"]
 categories = ["network-programming", "web-programming::http-server"]
@@ -35,7 +35,7 @@ features = ["make", "util"]
 default-features = false
 
 [dependencies.hyperdriver]
-version = "0.8.5"
+version = "0.9"
 features = ["client", "server"]
 
 [features]
