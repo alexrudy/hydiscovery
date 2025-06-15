@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.3](https://github.com/alexrudy/hydiscovery/compare/v0.8.2...v0.8.3) - 2025-06-15
+
+### Other
+
+- Merge pull request #64 from alexrudy/deps/hyperdriver
+- [deps] Bump hyperdriver to 0.9
+
 ## [0.8.2](https://github.com/alexrudy/hydiscovery/compare/v0.8.1...v0.8.2) - 2024-12-28
 
 ### Other
